@@ -9,19 +9,19 @@ nav_order: 1
 {{< rawhtml >}}
 <div>
   <!-- 1) Load highlight.js CSS (pick any style you like) -->
-  <link 
+  <!-- <link 
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css"> -->
   
   <!-- 2) Load the highlight.js core library -->
-  <script
+  <!-- <script
     src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js">
-  </script>
+  </script> -->
 
   <!-- 3) Load the BibTeX plugin for highlight.js -->
-  <script
+  <!-- <script
     src="https://cdn.jsdelivr.net/gh/highlightjs/highlightjs-bibtex/dist/bibtex.min.js">
-  </script>
+  </script> -->
 
   <!-- 4) The search box the user can type into -->
   <input

@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function buildBibTex(entry) {
     const { citationKey, entryType, entryTags } = entry;
     const tagsString = Object.entries(entryTags)
-      // Filter out bibtex_show:
+      // If you had any fields you wanted to exclude from the displayed BibTeX,
+      // you could filter them out here:
       .filter(([key]) => key !== 'bibtex_show')
       .map(([key, val]) => `  ${key} = {${val}},`)
       .join('\n');
@@ -25,56 +26,65 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `@${entryType}{${citationKey},\n${tagsString}\n}`;
   }
 
-  // 3) Render them all
+  // 3) Render all entries
   entries.forEach(entry => {
+    // Create a container for this paper
     const paperDiv = document.createElement('div');
     paperDiv.classList.add('paper-item');
 
     // Title
     paperDiv.innerHTML = `<h3>${entry.entryTags.title || 'Untitled'}</h3>`;
 
-    // "Bibtex" toggle button
+    // (A) "BibTeX" toggle button
     const bibtexButton = document.createElement('button');
     bibtexButton.innerText = 'Bibtex';
     bibtexButton.classList.add('bibtex-btn');
 
-    // Container for the BibTeX (hidden by default)
+    // (B) Container for the BibTeX (hidden by default)
     const bibtexContainer = document.createElement('div');
     bibtexContainer.classList.add('bibtex-container');
     bibtexContainer.style.display = 'none';
 
-    // Use class="language-bibtex" so that highlight.js recognizes it
-// Instead of class="language-bibtex"
-bibtexContainer.innerHTML = `
-  <pre><code class="language-latex">${buildBibTex(entry)}</code></pre>
-`;
+    // Highlight.js expects something like <code class="language-latex">:
+    bibtexContainer.innerHTML = `
+      <pre><code class="language-latex">${buildBibTex(entry)}</code></pre>
+    `;
 
+    // (C) Extract the paper's tags and store them in a data attribute
+    //     so we can easily filter on them later:
+    const rawTags = entry.entryTags.tags || ''; 
+    paperDiv.dataset.tags = rawTags.toLowerCase();
 
     // Append everything
     paperDiv.appendChild(bibtexButton);
     paperDiv.appendChild(bibtexContainer);
     container.appendChild(paperDiv);
 
-    // Toggle show/hide on click
+    // (D) Show/hide the BibTeX block on button click
     bibtexButton.addEventListener('click', () => {
       bibtexContainer.style.display =
         bibtexContainer.style.display === 'none' ? 'block' : 'none';
     });
 
-    // Highlight any new code blocks in this newly inserted container
-    // (You can also do this once at the end if you prefer).
+    // (E) If using highlight.js, highlight newly inserted code blocks
     if (typeof hljs !== 'undefined') {
       hljs.highlightAll();
     }
   });
 
-  // 4) Simple filtering on user input
+  // 4) Simple filtering on user input (search by title OR tags)
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
     const paperItems = container.querySelectorAll('.paper-item');
 
     paperItems.forEach((item) => {
-      if (item.innerText.toLowerCase().includes(query)) {
+      // Get title from the <h3> 
+      const titleText = item.querySelector('h3')?.textContent.toLowerCase() || '';
+      // Get tags from data-tags attribute
+      const tagsText = item.dataset.tags || '';
+
+      // Show item if title or tags match search query
+      if (titleText.includes(query) || tagsText.includes(query)) {
         item.style.display = '';
       } else {
         item.style.display = 'none';
