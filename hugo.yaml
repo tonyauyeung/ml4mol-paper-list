@@ -65,7 +65,7 @@ params:
     imageTitle: my image
     buttons:
       - name: Papers
-        url: posts
+        url: papers
       - name: Tags
         url: tags
     Content: "blablabla"
@@ -82,7 +82,7 @@ params:
     - name: slack
       url: "https://ml4sim.slack.com"
     - name: github
-      url: "https://github.com/"
+      url: "https://github.com/tonyauyeung/ml4mol-paper-list"
 
   analytics:
     google:
@@ -115,9 +115,9 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
-    - identifier: categories
-      name: categories
-      url: /categories/
+    - identifier: AllPapers
+      name: AllPapers
+      url: /papers/
       weight: 10
     - identifier: tags
       name: TAGs
@@ -136,7 +136,7 @@ markup:
     # codeFences: true
     # guessSyntax: true
     # lineNos: true
-    # style: monokai
+    style: monokai
 
 outputs:
   home:

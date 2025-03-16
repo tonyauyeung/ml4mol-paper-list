@@ -1,0 +1,19 @@
+{{ $papers := site.Data.papers }}
+{{ if $papers }}
+  {{ range $papers }}
+    <div class="paper-item">
+      <h3>{{ .title }}</h3>
+      <p><strong>Authors:</strong> {{ .author }}</p>
+      <p><strong>Year:</strong> {{ .year }}</p>
+      <p><strong>Journal/Conference:</strong> {{ .journal }}</p>
+      {{ if .doi }}
+        <p><strong>DOI:</strong> <a href="https://doi.org/{{ .doi }}">{{ .doi }}</a></p>
+      {{ end }}
+      {{ if .abstract }}
+        <p><strong>Abstract:</strong> {{ .abstract }}</p>
+      {{ end }}
+    </div>
+  {{ end }}
+{{ else }}
+  <p>No papers found.</p>
+{{ end }}
