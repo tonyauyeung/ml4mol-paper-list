@@ -1,0 +1,37 @@
+/* File: static/css/papers.css */
+
+/* 
+   Each year gets its own .year-section container, 
+   with a line at the top and the year on the right.
+*/
+.year-section {
+    position: relative;
+    margin: 1rem 0;       /* vertical spacing between year groups */
+    padding-top: 1rem;    /* push the first paper down below the line + heading */
+  }
+  
+  /* 
+     The year heading is absolutely positioned on that top border, 
+     aligned to the right. 
+  */
+  .year-heading {
+    position: absolute;
+    top: 0rem;    /* slightly above the line so text can sit on it */
+    right: 0;        
+    font-size: 2rem;
+    padding: 0 0.5rem;  /* so the background covers behind the text nicely */
+    margin: 0;
+    opacity: 0.5;    /* or remove this if you don't want transparency */
+  }
+  
+  /* Optionally, give each paper item some right padding 
+     so long titles don't collide with the heading. */
+  .paper-item {
+    padding-right: 10rem;
+  }
+  
+  /* If you want extra space between each paper item, you can do: */
+  .paper-item + .paper-item {
+    margin-top: 1rem;
+  }
+  

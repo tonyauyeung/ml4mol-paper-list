@@ -22,7 +22,7 @@ nav_order: 1
   <!-- <script
     src="https://cdn.jsdelivr.net/gh/highlightjs/highlightjs-bibtex/dist/bibtex.min.js">
   </script> -->
-
+  <link rel="stylesheet" href="/css/papers.css">
   <!-- 4) The search box the user can type into -->
   <input
     type="text"
