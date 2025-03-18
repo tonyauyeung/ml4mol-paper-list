@@ -1,5 +1,6 @@
 // File: bibsearch.js
 import { parseBibFile } from './bibtex-parse.js';
+import { createPaperDiv } from './paperUtils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const container   = document.getElementById('papers-container');
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 2) Parse the .bib text
   let entries = parseBibFile(bibText);
 
-  // 3) Sort entries by year (descending).
+  // 3) Sort entries by year (descending)
   entries = entries.sort((a, b) => {
     const yearA = parseInt(a.entryTags.year, 10) || 0;
     const yearB = parseInt(b.entryTags.year, 10) || 0;
@@ -29,19 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     groupedByYear[y].push(entry);
   });
 
-  const allYears = Object.keys(groupedByYear)
-    .sort((a, b) => parseInt(b) - parseInt(a));
+  // Sort year headings descending
+  const allYears = Object.keys(groupedByYear).sort((a, b) => parseInt(b) - parseInt(a));
 
-  function buildBibTex(entry) {
-    const { citationKey, entryType, entryTags } = entry;
-    const tagsString = Object.entries(entryTags)
-      .filter(([key]) => key !== 'bibtex_show')
-      .map(([key, val]) => `  ${key} = {${val}},`)
-      .join('\n');
-
-    return `@${entryType}{${citationKey},\n${tagsString}\n}`;
-  }
-
+  // 5) Build the UI, year by year
   allYears.forEach(year => {
     const yearSection = document.createElement('div');
     yearSection.classList.add('year-section');
@@ -49,91 +41,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     const yearHeading = document.createElement('h2');
     yearHeading.classList.add('year-heading');
     yearHeading.textContent = year;
-
     yearSection.appendChild(yearHeading);
 
     groupedByYear[year].forEach(entry => {
-      const paperDiv = document.createElement('div');
-      paperDiv.classList.add('paper-item');
+      // Create one paper div with shared code:
+      const paperDiv = createPaperDiv(entry);
 
+      // For searching, store additional data on the paperDiv
       const title = entry.entryTags.title || 'Untitled';
-      paperDiv.innerHTML = `<h3>${title}</h3>`;
+      paperDiv.dataset.search = [
+        title, 
+        year, 
+        entry.entryTags.tags || ''
+      ].join(' ').toLowerCase();
 
-      const buttonContainer = document.createElement('div');
-      buttonContainer.classList.add('button-container');
-      buttonContainer.style.marginTop = '10px';
-      buttonContainer.style.display = 'flex';
-      buttonContainer.style.gap = '10px';
-
-      const bibtexButton = document.createElement('button');
-      bibtexButton.innerText = 'BibTex';
-      bibtexButton.classList.add('bibtex-btn');
-
-      if (entry.entryTags.url) {
-        const urlButton = document.createElement('a');
-        urlButton.innerText = 'PAPER';
-        urlButton.classList.add('url-btn');
-        urlButton.href = entry.entryTags.url;
-        urlButton.target = '_blank';
-        buttonContainer.appendChild(urlButton);
-      }
-
-      if (entry.entryTags.tdlr) {
-        const tdlrButton = document.createElement('button');
-        tdlrButton.innerText = 'TDLR';
-        tdlrButton.classList.add('tdlr-btn');
-
-        const tdlrContainer = document.createElement('div');
-        tdlrContainer.classList.add('tdlr-container');
-        tdlrContainer.style.display = 'none';
-        tdlrContainer.innerText = entry.entryTags.tdlr;
-
-        paperDiv.appendChild(tdlrButton);
-        paperDiv.appendChild(tdlrContainer);
-
-        tdlrButton.addEventListener('click', () => {
-          tdlrContainer.style.display =
-            (tdlrContainer.style.display === 'none') ? 'block' : 'none';
-        });
-      }
-
-      const bibtexContainer = document.createElement('div');
-      bibtexContainer.classList.add('bibtex-container');
-      bibtexContainer.style.display = 'none';
-      bibtexContainer.innerHTML = `
-        <pre><code class="language-latex">${buildBibTex(entry)}</code></pre>
-      `;
-
-      paperDiv.dataset.search =
-        (title + ' ' + year + ' ' + (entry.entryTags.tags || '')).toLowerCase();
-
-      buttonContainer.appendChild(bibtexButton);
-      paperDiv.appendChild(buttonContainer);
-      paperDiv.appendChild(bibtexContainer);
+      // Add paper div to the year section
       yearSection.appendChild(paperDiv);
-
-      bibtexButton.addEventListener('click', () => {
-        bibtexContainer.style.display =
-          bibtexContainer.style.display === 'none' ? 'block' : 'none';
-      });
-
-      if (typeof hljs !== 'undefined') {
-        hljs.highlightAll();
-      }
     });
 
+    // Append the entire year section
     container.appendChild(yearSection);
   });
 
+  // 6) Implement live search
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
     const yearSections = container.querySelectorAll('.year-section');
 
-    yearSections.forEach((section) => {
+    yearSections.forEach(section => {
       const paperItems = section.querySelectorAll('.paper-item');
       let anyVisible = false;
 
-      paperItems.forEach((item) => {
+      paperItems.forEach(item => {
         const data = item.dataset.search || '';
         if (data.includes(query)) {
           item.style.display = '';
@@ -143,6 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
 
+      // Hide the heading if no items remain
       const heading = section.querySelector('.year-heading');
       heading.style.display = anyVisible ? '' : 'none';
     });

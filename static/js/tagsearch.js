@@ -1,31 +1,19 @@
 // File: tagsearch.js
 import { parseBibFile } from './bibtex-parse.js';
+import { createPaperDiv } from './paperUtils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const tagsContainer = document.getElementById('tags-container');
-  const papersContainer = document.getElementById('papers-container');
+  const tagsContainer    = document.getElementById('tags-container');
+  const papersContainer  = document.getElementById('papers-container');
 
-  console.log('hi, this is the tag page');
-
-  // Fetch the .bib file
+  // 1) Fetch the .bib file
   const response = await fetch('/_bibliography/papers.bib');
   const bibText  = await response.text();
 
-  // Parse the BibTeX content into an array of entries
+  // 2) Parse the BibTeX content
   const entries = parseBibFile(bibText);
-  console.log(entries);
 
-  function buildBibTex(entry) {
-    const { citationKey, entryType, entryTags } = entry;
-    const tagsString = Object.entries(entryTags)
-      .filter(([key]) => key !== 'bibtex_show')
-      .map(([key, val]) => `  ${key} = {${val}},`)
-      .join('\n');
-
-    return `@${entryType}{${citationKey},\n${tagsString}\n}`;
-  }
-
-  // Collect all unique tags from entries
+  // 3) Collect all unique tags
   const allTags = new Set();
   entries.forEach(entry => {
     const rawTags = entry.entryTags.tags || '';
@@ -37,14 +25,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
+  // 4) Create a button for each tag
   const selectedTags = new Set();
 
-  // Create tag buttons and enable selection
   allTags.forEach(tag => {
     const btn = document.createElement('button');
     btn.textContent = tag;
     btn.classList.add('tag-btn');
     btn.addEventListener('click', () => {
+      // Toggle selection
       if (selectedTags.has(tag)) {
         selectedTags.delete(tag);
         btn.classList.remove('selected');
@@ -57,102 +46,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     tagsContainer.appendChild(btn);
   });
 
+  // 5) Render all papers
   function renderEntries() {
     papersContainer.innerHTML = '';
+
     entries.forEach(entry => {
-      const paperDiv = document.createElement('div');
-      paperDiv.classList.add('paper-item');
+      // Build DOM using shared code
+      const paperDiv = createPaperDiv(entry);
 
-      // Title
-      const title = entry.entryTags.title || 'Untitled';
-      paperDiv.innerHTML = `<h3>${title}</h3>`;
-
-      // Buttons container
-      const buttonContainer = document.createElement('div');
-      buttonContainer.classList.add('button-container');
-      buttonContainer.style.marginTop = '10px';
-      buttonContainer.style.display = 'flex';
-      buttonContainer.style.gap = '10px';
-
-      // BibTeX button
-      const bibtexButton = document.createElement('button');
-      bibtexButton.innerText = 'BibTex';
-      bibtexButton.classList.add('bibtex-btn');
-
-      // URL button (if available)
-      if (entry.entryTags.url) {
-        const urlButton = document.createElement('a');
-        urlButton.innerText = 'PAPER';
-        urlButton.classList.add('url-btn');
-        urlButton.href = entry.entryTags.url;
-        urlButton.target = '_blank';
-        buttonContainer.appendChild(urlButton);
-      }
-
-      // TDLR button (if available)
-      if (entry.entryTags.tdlr) {
-        const tdlrButton = document.createElement('button');
-        tdlrButton.innerText = 'TDLR';
-        tdlrButton.classList.add('tdlr-btn');
-
-        const tdlrContainer = document.createElement('div');
-        tdlrContainer.classList.add('tdlr-container');
-        tdlrContainer.style.display = 'none';
-        tdlrContainer.innerText = entry.entryTags.tdlr;
-
-        tdlrButton.addEventListener('click', () => {
-          tdlrContainer.style.display =
-            (tdlrContainer.style.display === 'none') ? 'block' : 'none';
-        });
-
-        paperDiv.appendChild(tdlrButton);
-        paperDiv.appendChild(tdlrContainer);
-      }
-
-      // BibTeX container
-      const bibtexContainer = document.createElement('div');
-      bibtexContainer.classList.add('bibtex-container');
-      bibtexContainer.style.display = 'none';
-      bibtexContainer.innerHTML = `
-        <pre><code class="language-latex">${buildBibTex(entry)}</code></pre>
-      `;
-
-      // Store paper tags for filtering
+      // For filtering, store the raw tags in a dataset property
       const rawTags = entry.entryTags.tags || '';
       paperDiv.dataset.tags = rawTags.toLowerCase();
 
-      // Append buttons
-      buttonContainer.appendChild(bibtexButton);
-      paperDiv.appendChild(buttonContainer);
-      paperDiv.appendChild(bibtexContainer);
+      // By default, we’ll hide them all (we’ll call filterByTags)
       papersContainer.appendChild(paperDiv);
-
-      // Toggle BibTeX display
-      bibtexButton.addEventListener('click', () => {
-        bibtexContainer.style.display =
-          (bibtexContainer.style.display === 'none') ? 'block' : 'none';
-      });
-
-      if (typeof hljs !== 'undefined') {
-        hljs.highlightAll();
-      }
     });
   }
 
+  // 6) AND logic filter: show items that have *all* selected tags
+  //    Hide everything if no tags selected
   function filterByTags() {
     const paperItems = papersContainer.querySelectorAll('.paper-item');
 
     if (selectedTags.size === 0) {
-      paperItems.forEach(item => item.style.display = '');
+      // Hide all
+      paperItems.forEach(item => {
+        item.style.display = 'none';
+      });
       return;
     }
 
+    // Otherwise, show items that contain *all* selected tags
     paperItems.forEach(item => {
       const itemTags = item.dataset.tags || '';
-      const hasTag = [...selectedTags].some(tag => itemTags.includes(tag));
-      item.style.display = hasTag ? '' : 'none';
+      const hasAll = [...selectedTags].every(tag => itemTags.includes(tag));
+      item.style.display = hasAll ? '' : 'none';
     });
   }
 
+  // 7) Render everything, then hide all by default
   renderEntries();
+  filterByTags(); // => ensures all are hidden until user picks a tag
 });
