@@ -121,7 +121,7 @@ menu:
       weight: 10
     - identifier: tags
       name: TAGs
-      url: /tags/
+      url: /tag-search/
       weight: 20
     - identifier: search
       name: search

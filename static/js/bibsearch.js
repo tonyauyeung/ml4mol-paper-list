@@ -2,7 +2,6 @@
 import { parseBibFile } from './bibtex-parse.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('hello');
   const container   = document.getElementById('papers-container');
   const searchInput = document.getElementById('bibsearch');
 
@@ -12,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2) Parse the .bib text
   let entries = parseBibFile(bibText);
-  console.log(entries);
 
   // 3) Sort entries by year (descending).
   entries = entries.sort((a, b) => {
