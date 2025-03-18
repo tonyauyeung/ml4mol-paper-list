@@ -32,6 +32,6 @@
   
   /* If you want extra space between each paper item, you can do: */
   .paper-item + .paper-item {
-    margin-top: 1rem;
+    margin-top: 3rem;
   }
   
