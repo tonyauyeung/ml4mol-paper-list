@@ -30,7 +30,7 @@ params:
   ShowBreadCrumbs: false
   ShowCodeCopyButtons: false
   ShowWordCount: true
-  ShowRssButtonInSectionTermList: true
+  ShowRssButtonInSectionTermList: false
   UseHugoToc: true
   disableSpecial1stPost: false
   disableScrollToTop: false
@@ -64,10 +64,6 @@ params:
     imageHeight: 250
     imageTitle: my image
     buttons:
-      - name: Papers
-        url: papers
-      - name: Tags
-        url: tags
     Content: "blablabla"
     search: true
 
@@ -76,13 +72,13 @@ params:
     Title: "Paper List: Machine Learning for Molecules"
     Content: "blablabla"
 
-  socialIcons:
-    - name: email
-      url: "mailto:ro352@cam.ac.uk"
-    - name: slack
-      url: "https://ml4sim.slack.com"
-    - name: github
-      url: "https://github.com/tonyauyeung/ml4mol-paper-list"
+  # socialIcons:
+  #   - name: email
+  #     url: "mailto:ro352@cam.ac.uk"
+  #   - name: slack
+  #     url: "https://ml4sim.slack.com"
+  #   - name: github
+  #     url: "https://github.com/tonyauyeung/ml4mol-paper-list"
 
   analytics:
     google:
@@ -116,15 +112,15 @@ params:
 menu:
   main:
     - identifier: AllPapers
-      name: AllPapers
+      name: All Papers
       url: /papers/
       weight: 10
     - identifier: tags
-      name: TAGs
+      name: Papers by Category
       url: /tag-search/
       weight: 20
     - identifier: search
-      name: search
+      name: Search
       url: /search/
       weight: 30
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma

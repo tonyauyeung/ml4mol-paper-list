@@ -1,7 +1,7 @@
 ---
 permalink: /tag-search/
 title: Paper by Tags
-description: You can select papers according to their tags.
+description:
 nav: true
 nav_order: 2
 ---
@@ -27,17 +27,18 @@ nav_order: 2
       background: #f0f0f0;
       border: 1px solid #ccc;
       padding: 8px 12px;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
       transition: 0.2s;
+      color: black;
     }
     .tag-btn:hover {
-      background: #e0e0e0;
+      background: #b0b7c0;
     }
     .tag-btn.selected {
-      background: #007bff;
+      background: #595e60;
       color: white;
-      border-color: #0056b3;
+      border-color: #595e60;
     }
   </style>
 </div>

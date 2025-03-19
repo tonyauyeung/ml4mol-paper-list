@@ -24,14 +24,21 @@ nav_order: 1
   </script> -->
   <link rel="stylesheet" href="/css/papers.css">
   <!-- 4) The search box the user can type into -->
-  <input
-    type="text"
-    id="bibsearch"
-    spellcheck="false"
-    autocomplete="off"
-    class="search bibsearch-form-input"
-    placeholder="Type to filter"
-  />
+  <div id="searchbox" class="search-container" style="margin-top: 3rem; display: flex; align-items: center; gap: 8px;" >
+    <input
+      type="text"
+      id="bibsearch"
+      spellcheck="false"
+      autocomplete="off"
+      class="search bibsearch-form-input"
+      placeholder="Type to filter"
+      maxlength="64" 
+      style="width:500px"
+    />
+    <span style="display: flex; align-items: center; height: 40px;">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </span>
+  </div>
 
   <!-- 5) Container where your JS will inject the paper entries -->
   <div id="papers-container"></div>

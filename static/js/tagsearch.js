@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tagsContainer    = document.getElementById('tags-container');
   const papersContainer  = document.getElementById('papers-container');
 
+  // Function to capitalize the first letter of each tag
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   // 1) Fetch the .bib file
   const response = await fetch('/_bibliography/papers.bib');
   const bibText  = await response.text();
@@ -30,8 +35,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   allTags.forEach(tag => {
     const btn = document.createElement('button');
-    btn.textContent = tag;
+    btn.textContent = capitalizeFirstLetter(tag); // Capitalize first letter
     btn.classList.add('tag-btn');
+    
+    // Ensure text color is black before selection
+    btn.style.color = 'black';
+
     btn.addEventListener('click', () => {
       // Toggle selection
       if (selectedTags.has(tag)) {
@@ -43,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       filterByTags();
     });
+
     tagsContainer.appendChild(btn);
   });
 
