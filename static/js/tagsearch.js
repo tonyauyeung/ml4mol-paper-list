@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // 1) Fetch the .bib file
-  const response = await fetch('/_bibliography/papers.bib');
+  const response = await fetch('../_bibliography/papers.bib');
   const bibText = await response.text();
 
   // 2) Parse the BibTeX content
