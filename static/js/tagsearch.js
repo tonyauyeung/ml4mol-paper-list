@@ -3,17 +3,20 @@ import { parseBibFile } from './bibtex-parse.js';
 import { createPaperDiv } from './paperUtils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const tagsContainer    = document.getElementById('tags-container');
-  const papersContainer  = document.getElementById('papers-container');
+  const tagsContainer = document.getElementById('tags-container');
+  const papersContainer = document.getElementById('papers-container');
 
-  // Function to capitalize the first letter of each tag
-  function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  // Function to capitalize the first letter of each word in a tag
+  function capitalizeWords(str) {
+    return str
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   }
 
   // 1) Fetch the .bib file
   const response = await fetch('/_bibliography/papers.bib');
-  const bibText  = await response.text();
+  const bibText = await response.text();
 
   // 2) Parse the BibTeX content
   const entries = parseBibFile(bibText);
@@ -35,11 +38,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   allTags.forEach(tag => {
     const btn = document.createElement('button');
-    btn.textContent = capitalizeFirstLetter(tag); // Capitalize first letter
+    btn.textContent = capitalizeWords(tag); // Capitalize first letter of each word
     btn.classList.add('tag-btn');
-    
-    // Ensure text color is black before selection
+
+    // Ensure text color is black before selection & text is bold
     btn.style.color = 'black';
+    btn.style.fontWeight = 'bold';
 
     btn.addEventListener('click', () => {
       // Toggle selection

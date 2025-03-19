@@ -22,24 +22,26 @@ nav_order: 2
   <!-- Load the tag filtering script -->
   <script src="/js/tagsearch.js" type="module"></script>
 
-  <style>
-    .tag-btn {
-      background: #f0f0f0;
-      border: 1px solid #ccc;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: 0.2s;
-      color: black;
-    }
-    .tag-btn:hover {
-      background: #b0b7c0;
-    }
-    .tag-btn.selected {
-      background: #595e60;
-      color: white;
-      border-color: #595e60;
-    }
-  </style>
+<style>
+  .tag-btn {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: black;
+    font-weight: bold; /* Make tag text bold */
+  }
+  .tag-btn:hover {
+    background: #b0b7c0;
+  }
+  .tag-btn.selected {
+    background: #595e60;
+    color: white;
+    border-color: #595e60;
+  }
+</style>
+
 </div>
 {{< /rawhtml >}}

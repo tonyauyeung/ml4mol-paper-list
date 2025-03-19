@@ -31,8 +31,10 @@
       {{- end }}
       {{- end }}
       <h1>{{ .title | default site.Title | markdownify }}</h1>
-      <span>{{ .subtitle | markdownify }}</span>
-      {{- partial "social_icons.html" -}}
+      <div class="profile_subtitle" style="text-align: justify;">
+        {{ .subtitle | safeHTML }}
+      </div>
+            {{- partial "social_icons.html" -}}
 
       {{- with .buttons }}
       <div class="buttons">
@@ -55,7 +57,7 @@
       {{- end }}
 
       <!-- Embedded Search Section -->
-      <div id="searchbox" class="search-container">
+      <!-- <div id="searchbox" class="search-container">
         <input id="searchInput" autofocus placeholder="Search papers by names or tags" aria-label="search" type="search" autocomplete="on" maxlength="64" style="width: 500px">
         <button type="submit" class="search-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -64,7 +66,7 @@
           </svg>
         </button>
         <ul id="searchResults" class="search-results" aria-label="search results"></ul>
-      </div>
+      </div> -->
   </div>
   {{- end}}
 </div>

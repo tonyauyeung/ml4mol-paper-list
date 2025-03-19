@@ -58,13 +58,23 @@ params:
   profileMode:
     enabled: true # needs to be explicitly set
     title: ML4Mol Paper List
-    subtitle: "Papers about *machine learning for molecules*, including but not limited to **sampling**, **generation**, **geometry**, and **dynamics**, publised in top ML conferences."
+    subtitle: |
+              <p>
+                Collections of Papers about <em>machine learning for molecules</em>, including but not limited to 
+                <strong>sampling</strong>, <strong>generation</strong>, <strong>geometry</strong>, and <strong>dynamics</strong>, 
+                published in top ML conferences.
+              </p> <br>
+              <p>
+                Explore our <strong>All Papers</strong> section for a complete list of papers. You can also browse papers by category in the 
+                <strong>Paper by Category</strong> section, where you can easily search for papers based on their 
+                specific topics.
+              </p>
     imageUrl: "img/cover.png"
     imageWidth: 280
     imageHeight: 250
     imageTitle: my image
     buttons:
-    Content: "blablabla"
+    Content: "hihihi"
     search: true
 
   # home-info mode
@@ -72,13 +82,13 @@ params:
     Title: "Paper List: Machine Learning for Molecules"
     Content: "blablabla"
 
-  # socialIcons:
-  #   - name: email
-  #     url: "mailto:ro352@cam.ac.uk"
-  #   - name: slack
-  #     url: "https://ml4sim.slack.com"
-  #   - name: github
-  #     url: "https://github.com/tonyauyeung/ml4mol-paper-list"
+  socialIcons:
+    - name: email
+      url: "mailto:ro352@cam.ac.uk"
+    - name: slack
+      url: "https://ml4sim.slack.com"
+    - name: github
+      url: "https://github.com/tonyauyeung/ml4mol-paper-list"
 
   analytics:
     google:
@@ -119,10 +129,10 @@ menu:
       name: Papers by Category
       url: /tag-search/
       weight: 20
-    - identifier: search
-      name: Search
-      url: /search/
-      weight: 30
+    # - identifier: search
+    #   name: Search
+    #   url: /search/
+    #   weight: 30
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
