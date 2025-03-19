@@ -17,10 +17,10 @@ nav_order: 2
   <div id="papers-container"></div>
 
   <!-- Load the bibtex-parse library -->
-  <script src="/js/bibtex-parse.js" type="module"></script>
+  <script src="../js/bibtex-parse.js" type="module"></script>
 
   <!-- Load the tag filtering script -->
-  <script src="/js/tagsearch.js" type="module"></script>
+  <script src="../js/tagsearch.js" type="module"></script>
 
 <style>
   .tag-btn {

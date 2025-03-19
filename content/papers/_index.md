@@ -44,7 +44,7 @@ nav_order: 1
   <div id="papers-container"></div>
 
   <!-- 6) Load your parsing library and search script (as modules) -->
-  <script src="/js/bibtex-parse.js" type="module"></script>
-  <script src="/js/bibsearch.js" type="module"></script>
+  <script src="../js/bibtex-parse.js" type="module"></script>
+  <script src="../js/bibsearch.js" type="module"></script>
 </div>
 {{< /rawhtml >}}
